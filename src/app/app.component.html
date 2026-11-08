@@ -1,0 +1,73 @@
+<ion-app>
+
+    <!-- MENU LATERAL -->
+    <ion-menu contentId="main-content" type="overlay">
+
+      <ion-content>
+
+        <div class="menu-header">
+          <div class="menu-logo">🐾 PITOCO</div>
+          <p>Seu cantinho de produtividade</p>
+        </div>
+
+        <ion-list lines="none">
+
+          <!-- INÍCIO -->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/home" routerLinkActive="ativo" routerDirection="root">
+              <ion-icon name="home-outline" slot="start"></ion-icon>
+              <ion-label>Início</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <!-- TEMPORIZADOR -->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/temporizador" routerLinkActive="ativo" routerDirection="root">
+              <ion-icon name="timer-outline" slot="start"></ion-icon>
+              <ion-label>Temporizador</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <!-- MEU PITOCO -->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/mascote" routerLinkActive="ativo" routerDirection="root">
+              <ion-icon name="paw-outline" slot="start"></ion-icon>
+              <ion-label>Meu Pitoco</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <!-- LOJA -->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/loja" routerLinkActive="ativo" routerDirection="root">
+              <ion-icon name="storefront-outline" slot="start"></ion-icon>
+              <ion-label>Loja</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <!-- ESTATÍSTICAS -->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/estatisticas" routerLinkActive="ativo" routerDirection="root">
+              <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
+              <ion-label>Estatísticas</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <!-- TUTORIAL -->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/tutorial" routerLinkActive="ativo" routerDirection="root">
+              <ion-icon name="book-outline" slot="start"></ion-icon>
+              <ion-label>Tutorial</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+        </ion-list>
+
+      </ion-content>
+
+    </ion-menu>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+
+
+</ion-app>
