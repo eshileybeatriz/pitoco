@@ -3,14 +3,67 @@
     <header class="topbar">
       <ion-menu-button></ion-menu-button>
       <div class="logo"><span class="logo-icon">🐾</span><span>PITOCO</span></div>
-      <span class="topbar-message">Meu Pitoco</span>
+      <span class="saldo-badge" aria-label="Saldo de Pitocoins">💰 {{ storage.pitocoins() }}</span>
     </header>
 
     <section class="page-card">
-      <span class="card-emoji">🐶</span>
       <h2>Meu Pitoco</h2>
-      <p>Em breve: nome, saúde, felicidade e itens do seu mascote.</p>
-      <!-- TODO: implementar Meu Pitoco -->
+
+      <app-pitoco-avatar [tamanho]="190" [animado]="true" />
+      <p>{{ humorTexto() }}</p>
+
+      @if (equipados().length > 0) {
+        <div class="equipados">
+          @for (item of equipados(); track item.id) {
+            <span class="chip">{{ item.icone }} {{ item.nome }}</span>
+          }
+        </div>
+      }
+
+      <div class="status">
+        <div class="linha">
+          <div class="rotulo"><span>❤️ Saúde</span><span>{{ storage.mascote().saude }}%</span></div>
+          <div class="barra saude" role="progressbar" aria-label="Saúde" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="storage.mascote().saude">
+            <span [style.width.%]="storage.mascote().saude"></span>
+          </div>
+        </div>
+        <div class="linha">
+          <div class="rotulo"><span>😊 Felicidade</span><span>{{ storage.mascote().felicidade }}%</span></div>
+          <div class="barra felicidade" role="progressbar" aria-label="Felicidade" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="storage.mascote().felicidade">
+            <span [style.width.%]="storage.mascote().felicidade"></span>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        Cada ciclo de foco concluído deixa o Pitoco mais feliz. Depois de 24 horas sem focar,
+        ele perde saúde e felicidade, então volte sempre!
+      </p>
+
+      <div class="acoes">
+        <button type="button" class="btn btn-primario" routerLink="/temporizador">⏱️ Focar agora</button>
+        <button type="button" class="btn btn-secundario" routerLink="/loja">🛍️ Ir à loja</button>
+      </div>
+
+      <div class="editar-nome">
+        <label class="campo-label" for="nome-mascote">Nome do mascote</label>
+        <div class="linha-campo">
+          <input
+            id="nome-mascote"
+            class="campo"
+            type="text"
+            maxlength="20"
+            placeholder="Nome do mascote"
+            [value]="novoNome()"
+            (input)="aoDigitar($event)"
+            (keyup.enter)="salvarNome()"
+          />
+          <button type="button" class="btn btn-secundario btn-pequeno" (click)="salvarNome()">Salvar nome</button>
+        </div>
+        @if (feedback(); as msg) {
+          <p role="status">{{ msg }}</p>
+        }
+      </div>
     </section>
   </main>
 </ion-content>

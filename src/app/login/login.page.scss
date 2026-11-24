@@ -1,0 +1,24 @@
+@use '../shared/page' as *;
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 18px;
+  text-align: left;
+
+  .campo-label {
+    width: 100%;
+    max-width: 280px;
+    margin-top: 12px;
+  }
+}
+
+.troca {
+  margin-top: 16px;
+
+  a {
+    color: $rosa;
+    font-weight: 800;
+  }
+}

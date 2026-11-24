@@ -3,14 +3,38 @@
     <header class="topbar">
       <ion-menu-button></ion-menu-button>
       <div class="logo"><span class="logo-icon">🐾</span><span>PITOCO</span></div>
-      <span class="topbar-message">Tutorial</span>
+      <span class="saldo-badge" aria-label="Saldo de Pitocoins">💰 {{ storage.pitocoins() }}</span>
     </header>
 
     <section class="page-card">
       <span class="card-emoji">📖</span>
-      <h2>Tutorial</h2>
-      <p>Em breve: como funciona a Técnica Pomodoro e o PITOCO.</p>
-      <!-- TODO: implementar Tutorial -->
+      <h2>Como o Pitoco funciona</h2>
+      <p>Um guia rápido para você aproveitar o app desde o primeiro foco.</p>
     </section>
+
+    <ol class="passos" style="list-style: none; padding: 0">
+      @for (passo of passos; track passo.titulo; let i = $index) {
+        <li class="passo">
+          <span class="num" aria-hidden="true">{{ i + 1 }}</span>
+          <div>
+            <h3>{{ passo.titulo }}</h3>
+            <p>{{ passo.texto }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+
+    <div class="rodape-acoes">
+      <div class="acoes">
+        <button type="button" class="btn btn-primario" (click)="concluir()">
+          {{ storage.dados().tutorialConcluido ? '⏱️ Ir para o temporizador' : 'Entendi, vamos focar!' }}
+        </button>
+      </div>
+      <p>
+        <button type="button" class="link-discreto" (click)="reiniciarDados()">
+          Apagar dados e recomeçar a demonstração
+        </button>
+      </p>
+    </div>
   </main>
 </ion-content>

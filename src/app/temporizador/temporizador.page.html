@@ -3,14 +3,121 @@
     <header class="topbar">
       <ion-menu-button></ion-menu-button>
       <div class="logo"><span class="logo-icon">🐾</span><span>PITOCO</span></div>
-      <span class="topbar-message">Temporizador</span>
+      <span class="topbar-direita">
+        <button
+          type="button"
+          class="pill btn-som"
+          (click)="som.alternar()"
+          [attr.aria-pressed]="som.ativo()"
+          [attr.aria-label]="som.ativo() ? 'Desligar sons de aviso' : 'Ligar sons de aviso'"
+        >{{ som.ativo() ? '🔔' : '🔕' }}</button>
+        <span class="saldo-badge" aria-label="Saldo de Pitocoins">💰 {{ storage.pitocoins() }}</span>
+      </span>
     </header>
 
+    @if (storage.focoAtivo()) {
+      <div class="aviso-bloqueio" role="status">
+        🔒 Modo foco ativo! Navegação bloqueada até o fim do ciclo.
+      </div>
+    }
+
+    @if (aviso(); as a) {
+      <div class="banner ok" role="status">
+        <span class="texto"><strong>{{ a.titulo }}</strong> {{ a.texto }}</span>
+        <button type="button" class="fechar" (click)="aviso.set(null)" aria-label="Fechar aviso">×</button>
+      </div>
+    }
+
+    @if (emergenciaAcionada()) {
+      <div class="banner erro" role="status">
+        <span class="texto">
+          <strong>🚨 Botão de emergência acionado.</strong>
+          O ciclo foi cancelado, a navegação foi liberada e você não ganhou Pitocoins desse ciclo.
+        </span>
+      </div>
+    }
+
     <section class="page-card">
-      <span class="card-emoji">⏱️</span>
-      <h2>Temporizador</h2>
-      <p>Em breve: ciclos de foco e pausa, com iniciar, pausar e reiniciar.</p>
-      <!-- TODO: implementar Temporizador -->
+      <span class="fase">{{ modo() === 'FOCO' ? 'Foco' : 'Pausa' }}</span>
+      <h2>{{ titulo() }}</h2>
+
+      <app-pitoco-avatar [tamanho]="150" [animado]="emExecucao()" />
+      <p class="ciclos">{{ storage.mascote().nome }} • ciclos concluídos: {{ ciclosConcluidos() }}</p>
+
+      <div class="relogio" role="timer" aria-live="off">{{ tempoFormatado() }}</div>
+      <div class="progresso" aria-hidden="true"><span [style.width.%]="progresso()"></span></div>
+
+      <div class="acoes">
+        @if (!emExecucao()) {
+          <button type="button" class="btn btn-primario" (click)="iniciar()">▶ {{ rotuloIniciar() }}</button>
+          @if (podeReiniciar()) {
+            <button type="button" class="btn btn-secundario" (click)="reiniciar()">↺ Reiniciar</button>
+          }
+        } @else if (modo() === 'PAUSA') {
+          <button type="button" class="btn btn-secundario" (click)="pausar()">⏸ Pausar</button>
+        } @else if (!confirmandoSos()) {
+          <button type="button" class="btn btn-perigo" (click)="confirmandoSos.set(true)">
+            🚨 Botão de emergência
+          </button>
+        }
+      </div>
+
+      @if (confirmandoSos() && emExecucao()) {
+        <div class="confirmacao-sos" role="alertdialog" aria-label="Confirmar emergência">
+          <p>Cancelar agora? Você perde as Pitocoins deste ciclo.</p>
+          <div class="acoes">
+            <button type="button" class="btn btn-perigo btn-pequeno" (click)="confirmarEmergencia()">
+              Sim, cancelar
+            </button>
+            <button type="button" class="btn btn-primario btn-pequeno" (click)="confirmandoSos.set(false)">
+              Continuar focando
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (!emExecucao()) {
+        <div class="opcoes-tempo">
+          <div>
+            <h4>Foco</h4>
+            <div class="grupo">
+              <button type="button" class="pill" [class.ativo]="focoMin() === 25" (click)="selecionarTempo(25, 5)">25 min</button>
+              <button type="button" class="pill" [class.ativo]="focoMin() === 50" (click)="selecionarTempo(50, 10)">50 min</button>
+              <button type="button" class="pill" [class.ativo]="focoMin() === 1" (click)="selecionarTempo(1, 1)">1 min (teste)</button>
+            </div>
+          </div>
+          <div>
+            <h4>Pausa</h4>
+            <div class="grupo">
+              <button type="button" class="pill" [class.ativo]="pausaMin() === 5" (click)="selecionarTempo(focoMin(), 5)">5 min</button>
+              <button type="button" class="pill" [class.ativo]="pausaMin() === 10" (click)="selecionarTempo(focoMin(), 10)">10 min</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tempo-personalizado">
+          <h4>Tempo personalizado</h4>
+          <div class="linha-personalizado">
+            <div>
+              <label class="campo-label" for="foco-pers">Foco (min)</label>
+              <input id="foco-pers" class="campo" type="number" inputmode="numeric"
+                [attr.min]="limiteFoco.min" [attr.max]="limiteFoco.max" placeholder="Ex.: 40"
+                [value]="focoPersonalizado()" (input)="aoDigitarPersonalizado('foco', $event)" />
+            </div>
+            <div>
+              <label class="campo-label" for="pausa-pers">Pausa (min)</label>
+              <input id="pausa-pers" class="campo" type="number" inputmode="numeric"
+                [attr.min]="limitePausa.min" [attr.max]="limitePausa.max" placeholder="Ex.: 8"
+                [value]="pausaPersonalizada()" (input)="aoDigitarPersonalizado('pausa', $event)"
+                (keyup.enter)="aplicarPersonalizado()" />
+            </div>
+            <button type="button" class="btn btn-secundario btn-pequeno" (click)="aplicarPersonalizado()">Aplicar</button>
+          </div>
+          @if (erroPersonalizado(); as msg) {
+            <p class="erro-campo" role="alert">{{ msg }}</p>
+          }
+        </div>
+      }
     </section>
   </main>
 </ion-content>

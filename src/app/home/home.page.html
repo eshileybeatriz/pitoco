@@ -16,7 +16,13 @@
 </header>
 
     <section class="welcome">
-      <p class="welcome-label">BEM-VINDA AO PITOCO!</p>
+      <p class="welcome-label">
+        @if (primeiroAcesso()) {
+          Boas-vindas ao Pitoco!
+        } @else {
+          Olá, {{ storage.dados().usuarioNome }}!
+        }
+      </p>
 
       <h1>
         Pequenos passos,<br />
@@ -29,20 +35,57 @@
       </p>
     </section>
 
-    <section class="focus-card">
-      <span class="card-emoji">🌱</span>
+    @if (primeiroAcesso()) {
+      <section class="focus-card primeiro-acesso">
+        <app-pitoco-avatar [tamanho]="120" [animado]="true" />
 
-      <h2>Vamos começar?</h2>
+        <h2>Como podemos te chamar?</h2>
 
-      <p>
-        Cada momento de concentração é uma oportunidade
-        de crescer. Seu Pitoco está esperando por você!
-      </p>
+        <p>
+          Escolha um nome ou entre como visitante para conhecer o app.
+          Seus dados ficam salvos só neste navegador.
+        </p>
 
-      <ion-button class="start-button" routerLink="/temporizador">
-        Iniciar foco
-      </ion-button>
-    </section>
+        <input
+          class="nome-input"
+          type="text"
+          maxlength="20"
+          placeholder="Seu nome"
+          aria-label="Seu nome"
+          [value]="nomeDigitado()"
+          (input)="aoDigitar($event)"
+          (keyup.enter)="confirmarNome()"
+        />
+
+        <div class="acoes-primeiro-acesso">
+          <ion-button class="start-button" [disabled]="!nomeDigitado().trim()" (click)="confirmarNome()">
+            Começar
+          </ion-button>
+          <ion-button class="start-button" fill="outline" (click)="entrarComoVisitante()">
+            Entrar como visitante
+          </ion-button>
+        </div>
+      </section>
+    } @else {
+      <section class="focus-card">
+        <app-pitoco-avatar [tamanho]="120" [animado]="true" />
+
+        <h2>Vamos começar?</h2>
+
+        <p>
+          Cada momento de concentração é uma oportunidade
+          de crescer. Seu Pitoco está esperando por você!
+        </p>
+
+        <ion-button class="start-button" routerLink="/temporizador">
+          Iniciar foco
+        </ion-button>
+
+        @if (!storage.dados().tutorialConcluido) {
+          <a class="dica-tutorial" routerLink="/tutorial">📖 Primeira vez por aqui? Veja como o Pitoco funciona</a>
+        }
+      </section>
+    }
 
   </main>
 </ion-content>

@@ -1,13 +1,18 @@
 <ion-app>
 
     <!-- MENU LATERAL -->
-    <ion-menu contentId="main-content" type="overlay">
+    <!-- [disabled]: o menu fica bloqueado enquanto um ciclo de foco está rodando -->
+    <ion-menu contentId="main-content" type="overlay" [disabled]="storage.focoAtivo() || !auth.logado()">
 
       <ion-content>
 
         <div class="menu-header">
           <div class="menu-logo">🐾 PITOCO</div>
           <p>Seu cantinho de produtividade</p>
+          @if (auth.contaAtual(); as conta) {
+            <p class="menu-usuario">Olá, {{ conta.nome }}!</p>
+          }
+          <p class="menu-saldo">💰 {{ storage.pitocoins() }} Pitocoins</p>
         </div>
 
         <ion-list lines="none">
@@ -57,6 +62,14 @@
             <ion-item routerLink="/tutorial" routerLinkActive="ativo" routerDirection="root">
               <ion-icon name="book-outline" slot="start"></ion-icon>
               <ion-label>Tutorial</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <!-- SAIR -->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item button (click)="sair()">
+              <ion-icon name="log-out-outline" slot="start"></ion-icon>
+              <ion-label>Sair</ion-label>
             </ion-item>
           </ion-menu-toggle>
 

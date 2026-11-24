@@ -1,12 +1,22 @@
 // Estilos comuns às páginas internas (mesma identidade visual da Home).
+
+$rosa: #D96B96;
+$rosa-escuro: #A94F72;
+$rosa-claro: #FFE5EF;
+$borda: #F5D4E0;
+$fundo: #FFF7F5;
+$texto-suave: #7A5A68;
+$verde: #2F7A52;
+$vermelho: #C9485B;
+
 ion-content {
-  --background: #FFF7F5;
+  --background: #{$fundo};
 }
 
 .page-container {
   min-height: 100%;
   padding: 32px 6%;
-  color: #A94F72;
+  color: $rosa-escuro;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -15,7 +25,7 @@ ion-content {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 24px;
-  border-bottom: 1px solid #F5D4E0;
+  border-bottom: 1px solid $borda;
 }
 
 .logo {
@@ -26,7 +36,7 @@ ion-content {
   font-size: 25px;
   font-weight: 600;
   letter-spacing: 2px;
-  color: #D96B96;
+  color: $rosa;
 }
 
 .logo-icon {
@@ -34,19 +44,49 @@ ion-content {
 }
 
 .topbar-message {
-  color: #7A5A68;
+  color: $texto-suave;
   font-size: 14px;
 }
 
+.topbar-direita {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-som {
+  padding: 4px 10px;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.saldo-badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: $rosa-claro;
+  border: 1px solid $borda;
+  color: $rosa-escuro;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+// ---------- Cartão principal ----------
+
 .page-card {
   max-width: 620px;
-  margin: 60px auto 0;
+  margin: 40px auto 0;
   padding: 35px;
   text-align: center;
   background: #FFFFFF;
-  border: 1px solid #F5D4E0;
+  border: 1px solid $borda;
   border-radius: 24px;
   box-shadow: 0 8px 25px rgba(217, 107, 150, 0.10);
+
+  &.largo {
+    max-width: 760px;
+  }
 
   .card-emoji {
     font-size: 42px;
@@ -55,27 +95,661 @@ ion-content {
   h2 {
     font-family: 'Fredoka', sans-serif;
     font-weight: 600;
-    color: #D96B96;
+    color: $rosa;
     font-size: 25px;
     margin: 15px 0 10px;
   }
 
   p {
-    color: #7A5A68;
+    color: $texto-suave;
     font-size: 15px;
     line-height: 1.7;
   }
 }
 
+.secao-titulo {
+  margin: 28px 0 4px;
+  text-align: left;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: $rosa;
+}
+
+// ---------- Avisos ----------
+
+.aviso-bloqueio {
+  max-width: 620px;
+  margin: 24px auto 0;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: #FDE8EC;
+  border: 1px solid #F3B8C4;
+  color: $vermelho;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 620px;
+  margin: 24px auto 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  background: $rosa-claro;
+  border: 1px solid $borda;
+  color: $rosa-escuro;
+
+  &.ok {
+    background: #EAF6EE;
+    border-color: #BFE3CD;
+    color: $verde;
+  }
+
+  &.erro {
+    background: #FDE8EC;
+    border-color: #F3B8C4;
+    color: $vermelho;
+  }
+
+  .texto {
+    flex: 1;
+  }
+
+  .fechar {
+    margin-left: auto;
+    padding: 0 4px;
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+}
+
+.confirmacao-sos {
+  margin: 18px auto 0;
+  padding: 16px;
+  max-width: 420px;
+  border-radius: 16px;
+  background: #FDE8EC;
+  border: 1px solid #F3B8C4;
+
+  p {
+    margin: 0 0 12px;
+    color: $vermelho;
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+  .acoes {
+    margin-top: 0;
+  }
+}
+
+// ---------- Botões, pílulas e campos ----------
+
+.btn {
+  padding: 12px 26px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba(217, 107, 150, 0.45);
+    outline-offset: 2px;
+  }
+}
+
+.btn-primario {
+  background: $rosa;
+  color: #FFFFFF;
+}
+
+.btn-secundario {
+  background: #FFFFFF;
+  color: $rosa;
+  border-color: $borda;
+
+  &:hover:not(:disabled) {
+    background: $rosa-claro;
+  }
+}
+
+.btn-perigo {
+  background: #FFFFFF;
+  color: $vermelho;
+  border-color: #F3B8C4;
+
+  &:hover:not(:disabled) {
+    background: #FDE8EC;
+  }
+}
+
+.btn-pequeno {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.pill {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid $borda;
+  background: #FFFFFF;
+  color: $rosa-escuro;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &.ativo {
+    background: $rosa;
+    border-color: $rosa;
+    color: #FFFFFF;
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba(217, 107, 150, 0.45);
+    outline-offset: 2px;
+  }
+}
+
+.campo {
+  width: 100%;
+  max-width: 280px;
+  padding: 10px 14px;
+  border: 1px solid $borda;
+  border-radius: 12px;
+  background: #FFFFFF;
+  color: $rosa-escuro;
+  font: inherit;
+
+  &:focus {
+    outline: 3px solid rgba(217, 107, 150, 0.35);
+    border-color: $rosa;
+  }
+}
+
+.campo-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: $texto-suave;
+}
+
+.link-discreto {
+  background: none;
+  border: none;
+  color: $texto-suave;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+// ---------- Temporizador ----------
+
+.fase {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: $rosa-claro;
+  color: $rosa-escuro;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.relogio {
+  margin: 8px 0 14px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(54px, 14vw, 84px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 3px;
+  color: $rosa;
+  font-variant-numeric: tabular-nums;
+}
+
+.progresso {
+  max-width: 360px;
+  height: 10px;
+  margin: 6px auto 8px;
+  border-radius: 999px;
+  background: $rosa-claro;
+  overflow: hidden;
+
+  > span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: $rosa;
+    transition: width 0.4s linear;
+  }
+}
+
+.ciclos {
+  margin: 0;
+  font-size: 13px;
+}
+
+.opcoes-tempo {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-top: 28px;
+  padding: 18px;
+  border-radius: 20px;
+  background: $fundo;
+  border: 1px solid $borda;
+
+  h4 {
+    margin: 0 0 10px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 15px;
+    color: $rosa;
+  }
+
+  .grupo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+
+.tempo-personalizado {
+  margin-top: 14px;
+  padding: 18px;
+  border-radius: 20px;
+  background: $fundo;
+  border: 1px solid $borda;
+
+  h4 {
+    margin: 0 0 10px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 15px;
+    color: $rosa;
+  }
+
+  .linha-personalizado {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+
+    > div {
+      text-align: left;
+    }
+
+    .campo {
+      max-width: 120px;
+    }
+  }
+
+  .erro-campo {
+    margin: 10px 0 0;
+    color: $vermelho;
+    font-size: 13px;
+    font-weight: 800;
+  }
+}
+
+.filtro-periodo {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 760px;
+  margin: 28px auto 0;
+}
+
+// ---------- Mascote ----------
+
+.status {
+  max-width: 380px;
+  margin: 18px auto;
+  text-align: left;
+
+  .linha {
+    margin-bottom: 14px;
+  }
+
+  .rotulo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 800;
+    color: $rosa-escuro;
+  }
+
+  .barra {
+    height: 12px;
+    border-radius: 999px;
+    background: $rosa-claro;
+    overflow: hidden;
+
+    > span {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s;
+    }
+
+    &.saude > span {
+      background: #E86F7E;
+    }
+
+    &.felicidade > span {
+      background: #F2B84B;
+    }
+  }
+}
+
+.equipados {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0;
+
+  .chip {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: $rosa-claro;
+    font-size: 13px;
+    font-weight: 800;
+  }
+}
+
+.editar-nome {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px dashed $borda;
+  text-align: left;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .linha-campo {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .campo {
+      flex: 1;
+      min-width: 160px;
+    }
+  }
+}
+
+// ---------- Loja ----------
+
+.lista-itens {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid $borda;
+  border-radius: 16px;
+  background: #FFFCFB;
+  text-align: left;
+
+  .info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .icone {
+    font-size: 30px;
+  }
+
+  strong {
+    display: block;
+    font-size: 15px;
+    color: $rosa-escuro;
+  }
+
+  small {
+    font-size: 12.5px;
+    color: $texto-suave;
+  }
+}
+
+// ---------- Estatísticas ----------
+
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 760px;
+  margin: 20px auto 0;
+
+  .cartao-num {
+    padding: 18px 12px;
+    border: 1px solid $borda;
+    border-radius: 18px;
+    background: #FFFFFF;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(217, 107, 150, 0.08);
+  }
+
+  .valor {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: $rosa;
+  }
+
+  .rotulo {
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: $texto-suave;
+    text-transform: uppercase;
+  }
+}
+
+.grafico {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 8px;
+  height: 200px;
+  margin-top: 16px;
+
+  .coluna {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .trilho {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .barra-v {
+    width: 100%;
+    max-width: 44px;
+    min-height: 4px;
+    border-radius: 10px 10px 4px 4px;
+    background: $rosa;
+    transition: height 0.4s;
+
+    &.vazia {
+      background: $borda;
+    }
+  }
+
+  &.mensal {
+    gap: 3px;
+
+    .val {
+      font-size: 9px;
+    }
+
+    .dia {
+      font-size: 9px;
+    }
+  }
+
+  .val {
+    height: 14px;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: $rosa-escuro;
+  }
+
+  .dia {
+    font-size: 12px;
+    font-weight: 800;
+    color: $texto-suave;
+    text-transform: uppercase;
+
+    &.hoje {
+      color: $rosa;
+    }
+  }
+}
+
+.vazio {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 16px;
+  background: $fundo;
+  border: 1px dashed $borda;
+  text-align: center;
+}
+
+// ---------- Tutorial ----------
+
+.passos {
+  display: grid;
+  gap: 14px;
+  max-width: 680px;
+  margin: 36px auto 0;
+}
+
+.passo {
+  display: flex;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid $borda;
+  border-radius: 20px;
+  background: #FFFFFF;
+  box-shadow: 0 6px 18px rgba(217, 107, 150, 0.08);
+  text-align: left;
+
+  .num {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: $rosa;
+    color: #FFFFFF;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+  }
+
+  h3 {
+    margin: 0 0 4px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: $rosa;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: $texto-suave;
+  }
+}
+
+.rodape-acoes {
+  max-width: 680px;
+  margin: 28px auto 0;
+  text-align: center;
+}
+
+// ---------- Responsivo ----------
+
 @media (max-width: 600px) {
   .page-container {
     padding: 22px 5%;
   }
+
   .topbar-message {
     display: none;
   }
+
   .page-card {
-    margin-top: 40px;
-    padding: 25px 20px;
+    margin-top: 28px;
+    padding: 25px 18px;
+  }
+
+  .resumo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .item {
+    flex-wrap: wrap;
+  }
+
+  .opcoes-tempo {
+    gap: 20px;
   }
 }

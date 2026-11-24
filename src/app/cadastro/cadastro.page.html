@@ -1,0 +1,67 @@
+<ion-content [fullscreen]="true">
+  <main class="page-container">
+    <header class="topbar">
+      <div class="logo"><span class="logo-icon">🐾</span><span>PITOCO</span></div>
+      <span class="topbar-message">Seu cantinho de produtividade</span>
+    </header>
+
+    <section class="page-card">
+      <span class="card-emoji" aria-hidden="true">📝</span>
+      <h2>Criar conta</h2>
+
+      @if (sucesso(); as msg) {
+        <div class="banner ok" role="status">
+          <span class="texto"><strong>✅ {{ msg }}</strong> Agora é só entrar com o seu e-mail e senha.</span>
+        </div>
+        <div class="acoes">
+          <button type="button" class="btn btn-primario" routerLink="/login">Ir para o login</button>
+        </div>
+      } @else {
+        <p>Preencha os dados abaixo para começar a cuidar do seu Pitoco.</p>
+
+        @if (erro(); as msg) {
+          <div class="banner erro" role="alert">
+            <span class="texto">{{ msg }}</span>
+          </div>
+        }
+
+        <div class="formulario">
+          <label class="campo-label" for="cad-nome">Nome</label>
+          <input id="cad-nome" class="campo" type="text" maxlength="20" autocomplete="name"
+            placeholder="Seu nome" [value]="nome()" (input)="aoDigitar('nome', $event)" />
+
+          <label class="campo-label" for="cad-email">E-mail</label>
+          <input id="cad-email" class="campo" type="email" autocomplete="email"
+            placeholder="voce@email.com" [value]="email()" (input)="aoDigitar('email', $event)" />
+
+          <label class="campo-label" for="cad-email2">Confirmar e-mail</label>
+          <input id="cad-email2" class="campo" type="email" autocomplete="off"
+            placeholder="Repita o e-mail" [value]="confirmaEmail()" (input)="aoDigitar('confirmaEmail', $event)" />
+
+          <label class="campo-label" for="cad-senha">Senha</label>
+          <input id="cad-senha" class="campo" type="password" autocomplete="new-password"
+            placeholder="Crie uma senha" [value]="senha()" (input)="aoDigitar('senha', $event)" />
+
+          <ul class="criterios" aria-label="Critérios de segurança da senha">
+            @for (c of criterios(); track c.texto) {
+              <li [class.ok]="c.ok">{{ c.ok ? '✓' : '○' }} {{ c.texto }}</li>
+            }
+          </ul>
+
+          <label class="campo-label" for="cad-senha2">Confirmar senha</label>
+          <input id="cad-senha2" class="campo" type="password" autocomplete="new-password"
+            placeholder="Repita a senha" [value]="confirmaSenha()" (input)="aoDigitar('confirmaSenha', $event)"
+            (keyup.enter)="cadastrar()" />
+        </div>
+
+        <div class="acoes">
+          <button type="button" class="btn btn-primario" [disabled]="enviando()" (click)="cadastrar()">
+            Cadastrar
+          </button>
+        </div>
+
+        <p class="troca">Já tem conta? <a routerLink="/login">Entrar</a></p>
+      }
+    </section>
+  </main>
+</ion-content>

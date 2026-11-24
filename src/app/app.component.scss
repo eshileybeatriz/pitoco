@@ -29,6 +29,26 @@ ion-menu ion-content {
   color: #7A5A68;
 }
 
+.menu-header .menu-usuario {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #A94F72;
+}
+
+.menu-header .menu-saldo {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: #FFFFFF;
+  border: 1px solid #F5D4E0;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #A94F72;
+}
+
 ion-list {
   padding: 20px 12px;
   background: transparent;

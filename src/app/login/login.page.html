@@ -1,0 +1,63 @@
+<ion-content [fullscreen]="true">
+  <main class="page-container">
+    <header class="topbar">
+      <div class="logo"><span class="logo-icon">🐾</span><span>PITOCO</span></div>
+      <span class="topbar-message">Seu cantinho de produtividade</span>
+    </header>
+
+    <section class="page-card">
+      @if (!recuperando()) {
+        <span class="card-emoji" aria-hidden="true">🔑</span>
+        <h2>Entrar</h2>
+        <p>Que bom te ver por aqui! Entre para continuar cuidando do seu Pitoco.</p>
+
+        @if (erro(); as msg) {
+          <div class="banner erro" role="alert"><span class="texto">{{ msg }}</span></div>
+        }
+
+        <div class="formulario">
+          <label class="campo-label" for="login-email">E-mail</label>
+          <input id="login-email" class="campo" type="email" autocomplete="email"
+            placeholder="voce@email.com" [value]="email()" (input)="aoDigitar('email', $event)" />
+
+          <label class="campo-label" for="login-senha">Senha</label>
+          <input id="login-senha" class="campo" type="password" autocomplete="current-password"
+            placeholder="Sua senha" [value]="senha()" (input)="aoDigitar('senha', $event)"
+            (keyup.enter)="entrar()" />
+        </div>
+
+        <div class="acoes">
+          <button type="button" class="btn btn-primario" [disabled]="enviando()" (click)="entrar()">Entrar</button>
+        </div>
+
+        <p class="troca">
+          <button type="button" class="link-discreto" (click)="abrirRecuperacao()">Esqueci minha senha</button>
+        </p>
+        <p class="troca">Ainda não tem conta? <a routerLink="/cadastro">Cadastre-se</a></p>
+      } @else {
+        <span class="card-emoji" aria-hidden="true">📧</span>
+        <h2>Recuperar senha</h2>
+        <p>Informe o e-mail da sua conta e enviaremos as instruções para criar uma nova senha.</p>
+
+        @if (erro(); as msg) {
+          <div class="banner erro" role="alert"><span class="texto">{{ msg }}</span></div>
+        }
+        @if (info(); as msg) {
+          <div class="banner ok" role="status"><span class="texto">{{ msg }}</span></div>
+        }
+
+        <div class="formulario">
+          <label class="campo-label" for="rec-email">E-mail</label>
+          <input id="rec-email" class="campo" type="email" autocomplete="email"
+            placeholder="voce@email.com" [value]="email()" (input)="aoDigitar('email', $event)"
+            (keyup.enter)="recuperar()" />
+        </div>
+
+        <div class="acoes">
+          <button type="button" class="btn btn-primario" (click)="recuperar()">Enviar instruções</button>
+          <button type="button" class="btn btn-secundario" (click)="voltarAoLogin()">Voltar ao login</button>
+        </div>
+      }
+    </section>
+  </main>
+</ion-content>

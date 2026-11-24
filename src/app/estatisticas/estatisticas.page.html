@@ -3,14 +3,59 @@
     <header class="topbar">
       <ion-menu-button></ion-menu-button>
       <div class="logo"><span class="logo-icon">🐾</span><span>PITOCO</span></div>
-      <span class="topbar-message">Estatísticas</span>
+      <span class="saldo-badge" aria-label="Saldo de Pitocoins">💰 {{ storage.pitocoins() }}</span>
     </header>
 
-    <section class="page-card">
-      <span class="card-emoji">📊</span>
-      <h2>Estatísticas</h2>
-      <p>Em breve: seu tempo de foco por dia, semana e mês.</p>
-      <!-- TODO: implementar Estatísticas -->
+    <div class="filtro-periodo" role="group" aria-label="Período das estatísticas">
+      @for (p of periodos; track p.id) {
+        <button type="button" class="pill" [class.ativo]="periodo() === p.id"
+          [attr.aria-pressed]="periodo() === p.id" (click)="selecionarPeriodo(p.id)">{{ p.rotulo }}</button>
+      }
+    </div>
+
+    <section class="resumo" [attr.aria-label]="'Resumo: ' + rotuloPeriodo()">
+      <div class="cartao-num">
+        <div class="valor">{{ formatarMinutos(totais().minutos) }}</div>
+        <div class="rotulo">Tempo de foco · {{ rotuloPeriodo() }}</div>
+      </div>
+      <div class="cartao-num">
+        <div class="valor">{{ totais().ciclos }}</div>
+        <div class="rotulo">Ciclos concluídos</div>
+      </div>
+      <div class="cartao-num">
+        <div class="valor">{{ totais().pitocoins }}</div>
+        <div class="rotulo">Pitocoins ganhos</div>
+      </div>
+      <div class="cartao-num">
+        <div class="valor">{{ totais().cancelados }}</div>
+        <div class="rotulo">Emergências</div>
+      </div>
+    </section>
+
+    <section class="page-card largo">
+      <h2>📊 Foco nos últimos {{ diasGrafico() }} dias</h2>
+
+      @if (temDados()) {
+        <div class="grafico" [class.mensal]="diasGrafico() > 7" role="img" [attr.aria-label]="'Minutos de foco por dia nos últimos ' + diasGrafico() + ' dias'">
+          @for (dia of grafico(); track $index) {
+            <div class="coluna">
+              <span class="val">{{ dia.minutos > 0 && diasGrafico() <= 7 ? dia.minutos : '' }}</span>
+              <div class="trilho">
+                <div class="barra-v" [class.vazia]="dia.minutos === 0" [style.height.%]="dia.altura"></div>
+              </div>
+              <span class="dia" [class.hoje]="dia.hoje">{{ dia.rotulo }}</span>
+            </div>
+          }
+        </div>
+        <p>Valores em minutos de foco concluídos.</p>
+      } @else {
+        <div class="vazio">
+          <p>Ainda não há sessões de foco registradas. Conclua seu primeiro ciclo para ver suas estatísticas aqui!</p>
+          <div class="acoes">
+            <button type="button" class="btn btn-primario" routerLink="/temporizador">⏱️ Iniciar foco</button>
+          </div>
+        </div>
+      }
     </section>
   </main>
 </ion-content>

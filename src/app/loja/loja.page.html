@@ -3,14 +3,63 @@
     <header class="topbar">
       <ion-menu-button></ion-menu-button>
       <div class="logo"><span class="logo-icon">🐾</span><span>PITOCO</span></div>
-      <span class="topbar-message">Loja</span>
+      <span class="saldo-badge" aria-label="Saldo de Pitocoins">💰 {{ storage.pitocoins() }}</span>
     </header>
 
-    <section class="page-card">
-      <span class="card-emoji">🛍️</span>
-      <h2>Loja</h2>
-      <p>Em breve: compre roupas, acessórios e comida com Pitocoins.</p>
-      <!-- TODO: implementar Loja -->
+    @if (feedback(); as f) {
+      <div class="banner" [class.ok]="f.sucesso" [class.erro]="!f.sucesso" role="status">
+        <span class="texto">{{ f.mensagem }}</span>
+        <button type="button" class="fechar" (click)="feedback.set(null)" aria-label="Fechar aviso">×</button>
+      </div>
+    }
+
+    <section class="page-card largo">
+      <h2>🛍️ Loja do Pitoco</h2>
+      <p>Troque suas Pitocoins por roupas, acessórios e comida para o seu mascote.</p>
+
+      <app-pitoco-avatar [tamanho]="130" />
+
+      <h3 class="secao-titulo">Roupas e acessórios</h3>
+      <div class="lista-itens">
+        @for (item of roupas; track item.id) {
+          <div class="item">
+            <div class="info">
+              <span class="icone" aria-hidden="true">{{ item.icone }}</span>
+              <div>
+                <strong>{{ item.nome }}</strong>
+                <small>
+                  {{ descricao(item) }} • 💰 {{ item.preco }}
+                  @if (equipado(item)) { • equipado ✓ }
+                </small>
+              </div>
+            </div>
+
+            @if (possui(item)) {
+              <button type="button" class="btn btn-secundario btn-pequeno" (click)="alternarEquipar(item)">
+                {{ equipado(item) ? 'Remover' : 'Equipar' }}
+              </button>
+            } @else {
+              <button type="button" class="btn btn-primario btn-pequeno" (click)="comprar(item)">Comprar</button>
+            }
+          </div>
+        }
+      </div>
+
+      <h3 class="secao-titulo">Comida e bebida</h3>
+      <div class="lista-itens">
+        @for (item of comidas; track item.id) {
+          <div class="item">
+            <div class="info">
+              <span class="icone" aria-hidden="true">{{ item.icone }}</span>
+              <div>
+                <strong>{{ item.nome }}</strong>
+                <small>{{ descricao(item) }} • 💰 {{ item.preco }}</small>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primario btn-pequeno" (click)="comprar(item)">Comprar</button>
+          </div>
+        }
+      </div>
     </section>
   </main>
 </ion-content>

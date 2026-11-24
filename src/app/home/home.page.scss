@@ -56,6 +56,7 @@ ion-content {
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .welcome h1 {
@@ -120,6 +121,48 @@ ion-button {
   --background: #D96B96;
   --border-radius: 14px;
   font-weight: 600;
+}
+
+/* PRIMEIRO ACESSO E DICA DO TUTORIAL */
+
+.nome-input {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin: 14px auto 0;
+  padding: 10px 14px;
+  border: 1px solid #F5D4E0;
+  border-radius: 12px;
+  background: #FFFFFF;
+  color: #A94F72;
+  font: inherit;
+  text-align: center;
+}
+
+.nome-input:focus {
+  outline: 3px solid rgba(217, 107, 150, 0.35);
+  border-color: #D96B96;
+}
+
+.acoes-primeiro-acesso {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 12px;
+}
+
+.start-button[fill='outline'] {
+  --background: transparent;
+  --color: #D96B96;
+  --border-color: #D96B96;
+}
+
+.dica-tutorial {
+  display: block;
+  margin-top: 16px;
+  color: #7A5A68;
+  font-size: 13.5px;
+  text-decoration: underline;
 }
 
 /* RESPONSIVIDADE */
