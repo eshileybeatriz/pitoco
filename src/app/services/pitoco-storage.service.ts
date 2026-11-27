@@ -1,4 +1,6 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
+
+import { AuthService } from './auth.service';
 
 /**
  * Serviço ÚNICO de dados do PITOCO (localStorage).
@@ -56,7 +58,15 @@ export interface ResultadoCompra {
 }
 
 const STORAGE_KEY = 'pitoco_app_data_v1';
+
+/** Cada e-mail tem a sua própria chave: progresso e Pitocoins nunca se misturam entre contas. */
+function chaveDoUsuario(email: string | null): string | null {
+  return email ? `${STORAGE_KEY}:${email}` : null;
+}
 const DIA_MS = 24 * 60 * 60 * 1000;
+
+/** Saldo inicial de cada usuário novo. 80 é um valor DE TESTE (para experimentar a loja). */
+export const PITOCOINS_INICIAIS = 80;
 
 export const CICLOS_ATE_PAUSA_LONGA = 4; // UC3
 export const PAUSA_LONGA_MIN = 15; // UC3
@@ -76,7 +86,7 @@ function dadosIniciais(): DadosPitoco {
   return {
     usuarioNome: '',
     tutorialConcluido: false,
-    pitocoins: 14, // começa com 14, como no protótipo
+    pitocoins: PITOCOINS_INICIAIS,
     mascote: {
       nome: 'Pitoco',
       saude: 85,
@@ -91,10 +101,12 @@ function dadosIniciais(): DadosPitoco {
 }
 
 /** Lê do localStorage; se estiver vazio ou corrompido, devolve os dados iniciais. */
-function carregar(): DadosPitoco {
+function carregar(email: string | null): DadosPitoco {
   const padrao = dadosIniciais();
+  const chave = chaveDoUsuario(email);
+  if (!chave) return padrao;
   try {
-    const bruto = localStorage.getItem(STORAGE_KEY);
+    const bruto = localStorage.getItem(chave);
     if (!bruto) return padrao;
     const salvo = JSON.parse(bruto) as Partial<DadosPitoco>;
     return {
@@ -122,7 +134,9 @@ export class PitocoStorageService {
     { id: 'suco_natural', nome: 'Suco Refrescante', categoria: 'bebida', preco: 5, icone: '🧃', efeitoSaude: 10, efeitoFelicidade: 10 },
   ];
 
-  private readonly _dados = signal<DadosPitoco>(carregar());
+  private readonly auth = inject(AuthService);
+
+  private readonly _dados = signal<DadosPitoco>(carregar(this.auth.emailAtual()));
   private readonly _focoAtivo = signal(false);
 
   readonly dados = this._dados.asReadonly();
@@ -163,9 +177,24 @@ export class PitocoStorageService {
 
   // ---------- Persistência ----------
 
+  /**
+   * Recarrega os dados do usuário que está logado agora. E-mail sem dados salvos começa do zero
+   * (progresso novo + saldo inicial). Chamar após login e logout.
+   */
+  carregarUsuarioAtual(): void {
+    this._focoAtivo.set(false);
+    const dados = carregar(this.auth.emailAtual());
+    this._dados.set(dados);
+    this.removerItensInexistentes();
+    this.aplicarDecaimento();
+    this.salvar(this._dados());
+  }
+
   private salvar(dados: DadosPitoco): void {
+    const chave = chaveDoUsuario(this.auth.emailAtual());
+    if (!chave) return; // sem usuário logado, nada é gravado
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+      localStorage.setItem(chave, JSON.stringify(dados));
     } catch {
       // armazenamento cheio ou bloqueado: o app segue funcionando sem salvar
     }

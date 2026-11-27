@@ -112,6 +112,9 @@ export class AuthService {
 
   readonly logado = computed(() => this.contaAtual() !== null);
 
+  /** E-mail (minúsculo) da sessão aberta, ou null. Usado para separar o progresso de cada usuário. */
+  readonly emailAtual = computed(() => this.contaAtual()?.email ?? null);
+
   // ---------- UC1: Cadastro ----------
 
   async cadastrar(dados: {

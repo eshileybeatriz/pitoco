@@ -165,6 +165,19 @@ ion-button {
   text-decoration: underline;
 }
 
+.aviso-teste {
+  max-width: 620px;
+  margin: 0 auto 20px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: #FFF3D6;
+  border: 1px solid #F0D48A;
+  color: #7A5A1E;
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: center;
+}
+
 /* RESPONSIVIDADE */
 
 @media (max-width: 600px) {

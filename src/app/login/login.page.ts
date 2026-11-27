@@ -43,6 +43,7 @@ export class LoginPage {
       this.erro.set(resultado.mensagem);
       return;
     }
+    this.storage.carregarUsuarioAtual(); // progresso próprio deste e-mail (novo e-mail = do zero)
     if (resultado.nome) this.storage.definirUsuario(resultado.nome);
     this.senha.set('');
     await this.router.navigateByUrl('/home');

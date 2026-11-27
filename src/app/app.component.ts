@@ -67,6 +67,7 @@ export class AppComponent {
   /** Encerra a sessão (UC2) e volta para a tela de login. */
   sair(): void {
     this.auth.sair();
+    this.storage.carregarUsuarioAtual();
     this.router.navigateByUrl('/login');
   }
 }
